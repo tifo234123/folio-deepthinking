@@ -60,7 +60,7 @@ A Windows-native build is planned; this bundle (`_internal/*.so`, no `.exe`) wil
 ## 📂 What's in this repo
 
 ```
-FolioDeepthinking.exe       — the app
+FolioDeepthinking           — the app (Linux ELF binary)
 _internal/folio/prompts/    — the system prompts that drive the assistant
   core.md                   — core research-assistant instructions
   chat.md                   — conversational mode
