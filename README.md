@@ -7,9 +7,11 @@ Built by **Abderrahman Ezzin** with **Python** and **PySide6** (Qt for Python), 
 
 ---
 
-## 🖼️ Screenshots
+## 🖼️ Screenshot
 
-*(coming soon)*
+![Folio research workspace](screenshots/folio-workspace.png)
+
+*The research workspace: sections on the left, extracted findings in the middle, and the always-present assistant on the right. Every finding stays linked to its source passage, and the "Reorganize book" action proposes a new structure you have to accept — the original chapters always stay intact.*
 
 ---
 
@@ -36,14 +38,14 @@ That structure is what keeps the assistant useful for real research instead of p
 
 ## ▶️ Run it
 
-This is currently distributed as a **packaged Windows build** (PyInstaller) rather than the raw `.py` source — see note below.
+This repo currently ships a **packaged Linux build** (PyInstaller) rather than the raw `.py` source — see note below.
 
 ```bash
-# Unzip, then run:
-FolioDeepthinking.exe
+chmod +x FolioDeepthinking
+./FolioDeepthinking
 ```
 
-No installation required; it's a self-contained desktop app for Windows.
+A Windows-native build is planned; this bundle (`_internal/*.so`, no `.exe`) will not run on Windows as-is.
 
 > **Note on source:** this repository ships the compiled application, not the raw Python source tree. The project's prompt files (the actual "brain" of the assistant — see [`prompts/`](_internal/folio/prompts)) are included in full and are readable as plain Markdown, since that's where most of the engineering effort went.
 
