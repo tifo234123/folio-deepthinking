@@ -1,0 +1,12 @@
+{
+  "scope": "Selected abstract; one batch only",
+  "status": "done",
+  "completed": 7,
+  "total": 7,
+  "findings": 1,
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "error": null,
+  "details_fields": 4,
+  "quoted_evidence": 1
+}

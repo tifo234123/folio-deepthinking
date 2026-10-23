@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Folio Deepthinking
+Comment=Local PDF research library
+Exec="/home/abderrahman/Desktop/Folio Deepthinking/launch.sh"
+Icon=/home/abderrahman/Desktop/Folio Deepthinking/folio/static/folio.svg
+Terminal=false
+Categories=Education;
