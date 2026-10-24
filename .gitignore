@@ -12,3 +12,4 @@ dist/
 # Local packaging output
 *.zip
 packaging/wine-build/
+!windows/FolioDeepthinking-windows-x64.zip
