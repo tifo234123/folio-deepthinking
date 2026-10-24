@@ -46,7 +46,7 @@ That structure is what keeps the assistant useful for real research instead of p
 
 ### Windows (ready-made `.exe`)
 
-1. Download [`windows/FolioDeepthinking.exe`](windows/FolioDeepthinking.exe) (open it, then **Download raw file**), or take it from the latest [Release](../../releases).
+1. Download **`FolioDeepthinking.exe`** from the [latest Release](../../releases/latest).
 2. Put it in its own folder and double-click it. It is a single file; the first start takes a few seconds.
 3. The app is unsigned, so SmartScreen may warn: **More info → Run anyway**.
 
@@ -87,7 +87,6 @@ folio/                      — application source
   static/                   — UI icons
 tests/                      — automated test suite
 packaging/                  — PyInstaller spec, launcher, icon, Windows requirements
-windows/                    — ready-to-run FolioDeepthinking.exe
 docs/                       — user guide, architecture, verification notes, screenshots
 screenshots/                — app screenshots
 ```
