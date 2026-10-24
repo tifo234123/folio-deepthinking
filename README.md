@@ -1,55 +1,91 @@
-# Folio Deepthinking
+# Folio Deepthinking 📚
 
-A separate edition of the native Folio desktop app for detailed, source-backed doctoral reading. The original project and the Desktop **Folio Saved** snapshot remain separate. This folder contains its own source code, Python environment, configuration, copied PDFs, and database.
+> **An AI research assistant for a personal library of PDF books.**
+> Ask questions across your books, get answers grounded in verbatim quotes, and keep a traceable research trail — never a confident guess with no source behind it.
 
-## Open
+Built by **Abderrahman Ezzin** with **Python** and **PySide6** (Qt for Python), running as a native desktop app on Windows and Linux.
 
-Double-click **Folio Deepthinking** on your Desktop, or run `./launch.sh` here. Your copied library and provider configuration are ready. New findings, notes, and outlines in this edition do not change the original library.
+---
 
-## Read a book by sections
+## 🖼️ Screenshot
 
-1. Open a book and select a chapter or subsection in the left-hand outline.
-2. **Reading overview** shows the scope's page/passages count, previously reviewed passages, saved findings, and actual source excerpts immediately. These excerpts are not an AI summary.
-3. **Section reader** contains all extracted text in the selected scope, page by page. Use Previous/Next or the page dropdown. Open the original PDF to verify columns, tables, notation, or extraction errors.
-4. **Explain this page in depth** fills the assistant with a doctoral-reading request and gives it the selected page's source context. Press Send when ready. Questions remain scoped to the selected section unless whole-book scope is enabled.
-5. **Deep read** reviews every passage in the selected scope in bounded neighboring batches. Before starting, the dialog shows the passage count, approximate model-call count, and provider. Enter an optional research focus. This uses your API account; a whole-book job may involve hundreds of requests.
-6. **Findings** contains detailed ideas, definitions, methods, equations, and data, with visible supporting quotations, PDF links, and model provenance. Filter by finding type or reading run. Completed batches appear as work progresses.
-7. Use **Background work** to cancel, inspect an error, or resume. Completed batches survive interruption; failed batches do not receive a successful checkpoint.
+![Folio research workspace](screenshots/folio-workspace.png)
 
-## What makes this edition different
+*The research workspace: sections on the left, extracted findings in the middle, and the always-present assistant on the right. Every finding stays linked to its source passage, and the "Reorganize book" action proposes a new structure you have to accept — the original chapters always stay intact.*
 
-- Detailed prompts preserve arguments, theoretical framing, mechanisms, evidence, conditions, examples, assumptions, trade-offs, and stated research gaps when supported by the book. Extra length is not forced when the source contains little information.
-- Each deep-reading response must account for every passage. Substantive passages require a cited finding; reference/navigation/unclear/out-of-focus passages receive explicit reasons. Unsupported or missing quotations are rejected.
-- Assistant context includes more bounded evidence, same-page context for selected passages, and representative excerpts across the selected scope. Retrieval prefers explanatory prose over short headings and bibliography-like text, without removing anything from deep reading.
-- Source search respects the selected section. The original source text and chapters remain available.
-- Large-book reorganizations can use bounded source groups instead of exceeding the model's input limit. These are broad previews based on sampled excerpts, with explicit caveats; all original passages are retained and acceptance remains manual.
-- Provider errors distinguish temporary unavailability from rate limits. Folio never silently switches provider or model.
+---
 
-## Evidence and limits
+## What it does
 
-Deepthinking names the reading workflow; it does not unlock a stronger model or guarantee doctoral-quality interpretation. Depth and accuracy depend on the source and selected model. Quotation validation verifies provenance, not every semantic claim. A completed run covers its chosen focus and readable passages, not unreadable pages or all possible questions. There is no OCR in this edition.
+Folio helps a researcher — the project was designed around a professor's personal PDF library — locate, extract, understand and organize evidence across many books, without losing track of where every claim actually came from.
 
-The copied book has layout flags on many pages. A layout flag is not proof that the page is unreadable. Inspect the original PDF, especially for formulas and tables. Original section mappings use page boundaries, so adjacent sections on the same page can overlap.
+- **Evidence-first answers.** Every finding is tied to a verbatim quote from the source PDF. The assistant is instructed to never invent a quote, a page number, or an author, and to say plainly when the available evidence can't settle a question.
+- **Structured extraction.** Findings are returned as structured JSON (`category`, `title`, `content`, `evidence`) with categories for claims, definitions, formulas, methods and data — each preserving units, conditions and uncertainty instead of flattening them into a soundbite.
+- **Scoped search.** Questions can be scoped to the whole library, a single book, a section or a selected passage, and the assistant respects that scope instead of silently mixing books together.
+- **Coverage tracking.** A "quick retrieval" is explicitly partial; an "exhaustive" request requires a tracked extraction job and reports exactly how many passages were actually covered (e.g. "12 of 90 passages processed") rather than implying the whole book was read.
+- **Notes & reorganization.** The professor's own notes are kept separate from AI-generated findings and from the original source text. Large reorganizations of the library's structure go through a proposal the user has to explicitly accept — nothing restructures silently.
+- **Prompt-injection resistant.** PDF content, including anything that reads like an instruction to the AI ("ignore your previous instructions...") is treated strictly as untrusted research material to analyze, never as a command.
 
-The new Reading overview is immediately usable offline. AI analysis starts only when requested. Existing findings from the original copy retain their original provenance and are not relabeled as deep reading.
+## 🧠 Why it's interesting from an engineering standpoint
 
-## Validation
+The core of this project isn't the UI — it's the **prompt architecture** behind it. Each task (chat, quick extraction, deep/exhaustive extraction, structure proposals) has its own dedicated system prompt, each one specifying:
+- what evidence is and isn't allowed to be asserted,
+- how to handle incomplete/unreadable (scanned, image-only) pages,
+- how to keep quantitative claims (numbers, units, conditions) intact instead of stripping context away,
+- explicit example behaviors (few-shot) for edge cases like conflicting sources or failed tool calls.
 
-The automated suite passed **46 tests**, covering the inherited workflows plus deep-reading batch resume, invalid/missing evidence, complete passage accounting, explicit empty reviews, scoped context, large-book source retention, and the section reader.
+That structure is what keeps the assistant useful for real research instead of producing fluent-sounding but unverifiable summaries.
 
-One authenticated live sample used the copied Gemini configuration on the selected abstract: **7 passages reviewed, 1 detailed finding, 4 detail fields, and 1 verified quotation**. This validates that small workflow, not the full book or all providers. See `docs/live-sample.json` and `docs/test-results.txt`.
+## ▶️ Run it
 
-## Storage and installation
+### Windows (ready-made `.exe`)
 
-Runtime data is in `data/`, including the private `.env`, SQLite database, and managed PDF copies. Back up this folder and keep credentials private. The SQLite database was copied with the SQLite backup API and PDF paths were rebased into this edition's own library. No PDF path points to the original library.
+1. Download [`windows/FolioDeepthinking-windows-x64.zip`](windows/FolioDeepthinking-windows-x64.zip) (click it, then **Download raw file**), or take it from the latest [Release](../../releases).
+2. Extract it and run `FolioDeepthinking\FolioDeepthinking.exe`. Keep the `_internal` folder beside it.
+3. The app is unsigned, so SmartScreen may warn: **More info → Run anyway**.
 
-For a fresh environment, run `./install.sh`. Development tests: `uv pip install --python .venv/bin/python pytest reportlab`, then `.venv/bin/python -m pytest tests -q`. Schema version 2 adds per-passage deep-review records while retaining old findings and jobs.
+Your library, database and API keys are stored in a `data` folder created next to the `.exe`.
 
-## Windows build
+### From source (Linux, macOS or Windows)
 
-The Windows app is a folder containing `FolioDeepthinking.exe`; keep the `_internal` folder beside it. Its `data` folder (database, PDFs, API keys) is created next to the `.exe` on first run and is never part of the build.
+```bash
+./install.sh        # creates .venv and installs pinned dependencies
+./launch.sh         # starts the desktop app
+```
 
-- **GitHub:** pushing a tag such as `v0.1.0` (or running the *Build Windows app* workflow manually) builds and tests on Windows and attaches `FolioDeepthinking-windows-x64.zip` to the release.
-- **Locally on Windows:** `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`. The app is written to `dist/FolioDeepthinking/`.
+Tests: `.venv/bin/python -m pytest tests -q`. See the [user guide](docs/USER-GUIDE.md) for the reading workflow and [architecture notes](docs/ARCHITECTURE.md) for design decisions.
 
-Windows builds pin Qt 6.8 (LTS). Qt 6.9+ links the Windows ICU library, which Wine lacks, and 6.8 lets the same build be tested under Wine.
+### Building the Windows `.exe`
+
+Pushing a tag such as `v0.1.0` runs the [Windows build workflow](.github/workflows/build-windows.yml), which tests the code, builds with PyInstaller on Windows and attaches the zip to a GitHub Release. To build locally on Windows: `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`.
+
+## 🛠️ Stack
+
+- **Python 3.12**
+- **PySide6** (Qt) for the desktop UI
+- **PyMuPDF** for PDF parsing/extraction
+- **SQLite** (with FTS5 full-text search) for the local library
+- **Pydantic** for structured LLM output validation
+- **httpx** adapters for Ollama, LM Studio, OpenAI, Anthropic, Gemini, NVIDIA, OpenRouter and compatible APIs
+- Packaged with **PyInstaller**
+
+## 📂 What's in this repo
+
+```
+folio/                      — application source
+  prompts/                  — the system prompts that drive the assistant
+    core.md                 — core research-assistant instructions
+    chat.md                 — conversational mode
+    extract.md / deep_extract.md — structured evidence extraction
+    structure.md / group_structure.md — library reorganization proposals
+  static/                   — UI icons
+tests/                      — automated test suite
+packaging/                  — PyInstaller spec, launcher, icon, Windows requirements
+windows/                    — ready-to-run Windows build (zip)
+docs/                       — user guide, architecture, verification notes, screenshots
+screenshots/                — README screenshot
+```
+
+---
+
+*Built by [Abderrahman Ezzin](https://github.com/tifo234123) — Computer Engineering student, Università degli Studi di Cassino e del Lazio Meridionale.*
