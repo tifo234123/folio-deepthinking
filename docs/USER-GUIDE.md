@@ -47,9 +47,9 @@ For a fresh environment, run `./install.sh`. Development tests: `uv pip install 
 
 ## Windows build
 
-The Windows app is a folder containing `FolioDeepthinking.exe`; keep the `_internal` folder beside it. Its `data` folder (database, PDFs, API keys) is created next to the `.exe` on first run and is never part of the build.
+The Windows app is a single file, `FolioDeepthinking.exe`. Its `data` folder (database, PDFs, API keys) is created next to the `.exe` on first run and is never part of the build.
 
-- **GitHub:** pushing a tag such as `v0.1.0` (or running the *Build Windows app* workflow manually) builds and tests on Windows and attaches `FolioDeepthinking-windows-x64.zip` to the release.
-- **Locally on Windows:** `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`. The app is written to `dist/FolioDeepthinking/`.
+- **GitHub:** pushing a tag such as `v0.1.0` (or running the *Build Windows app* workflow manually) builds and tests on Windows and attaches `FolioDeepthinking.exe` to the release.
+- **Locally on Windows:** `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`. The app is written to `dist/FolioDeepthinking.exe`.
 
 Windows builds pin Qt 6.8 (LTS). Qt 6.9+ links the Windows ICU library, which Wine lacks, and 6.8 lets the same build be tested under Wine.

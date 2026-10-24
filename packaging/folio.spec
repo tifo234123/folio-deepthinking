@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller spec for Folio Deepthinking (Windows .exe, also works on Linux).
+"""PyInstaller spec for Folio Deepthinking: a single-file Windows .exe (also builds on Linux).
 
 Build from the project root:  pyinstaller packaging/folio.spec --noconfirm
 """
@@ -26,13 +26,11 @@ a = Analysis(
 
 pyz = PYZ(a.pure)
 
+# One self-contained executable: dist/FolioDeepthinking.exe (no _internal folder).
 exe = EXE(
-    pyz, a.scripts, [],
-    exclude_binaries=True,
+    pyz, a.scripts, a.binaries, a.datas, [],
     name="FolioDeepthinking",
     console=False,
     upx=False,
     icon=str(ICON) if sys.platform == "win32" and ICON.exists() else None,
 )
-
-coll = COLLECT(exe, a.binaries, a.datas, upx=False, name="FolioDeepthinking")

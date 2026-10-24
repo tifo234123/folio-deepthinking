@@ -7,11 +7,17 @@ Built by **Abderrahman Ezzin** with **Python** and **PySide6** (Qt for Python), 
 
 ---
 
-## 🖼️ Screenshot
+## 🖼️ Screenshots
 
-![Folio research workspace](screenshots/folio-workspace.png)
+![Research workspace: findings with verbatim quotes](screenshots/findings.png)
 
-*The research workspace: sections on the left, extracted findings in the middle, and the always-present assistant on the right. Every finding stays linked to its source passage, and the "Reorganize book" action proposes a new structure you have to accept — the original chapters always stay intact.*
+*Findings from a deep read: each one carries a verbatim quotation, a link to its PDF page, and the model that produced it. Sections are on the left; the assistant is always on the right.*
+
+| Library | Reading overview |
+|---|---|
+| ![Library](screenshots/library.png) | ![Reading overview](screenshots/reading-overview.png) |
+| **Section reader** | **AI settings** |
+| ![Section reader](screenshots/section-reader.png) | ![AI settings](screenshots/ai-settings.png) |
 
 ---
 
@@ -40,8 +46,8 @@ That structure is what keeps the assistant useful for real research instead of p
 
 ### Windows (ready-made `.exe`)
 
-1. Download [`windows/FolioDeepthinking-windows-x64.zip`](windows/FolioDeepthinking-windows-x64.zip) (click it, then **Download raw file**), or take it from the latest [Release](../../releases).
-2. Extract it and run `FolioDeepthinking\FolioDeepthinking.exe`. Keep the `_internal` folder beside it.
+1. Download [`windows/FolioDeepthinking.exe`](windows/FolioDeepthinking.exe) (open it, then **Download raw file**), or take it from the latest [Release](../../releases).
+2. Put it in its own folder and double-click it. It is a single file; the first start takes a few seconds.
 3. The app is unsigned, so SmartScreen may warn: **More info → Run anyway**.
 
 Your library, database and API keys are stored in a `data` folder created next to the `.exe`.
@@ -57,7 +63,7 @@ Tests: `.venv/bin/python -m pytest tests -q`. See the [user guide](docs/USER-GUI
 
 ### Building the Windows `.exe`
 
-Pushing a tag such as `v0.1.0` runs the [Windows build workflow](.github/workflows/build-windows.yml), which tests the code, builds with PyInstaller on Windows and attaches the zip to a GitHub Release. To build locally on Windows: `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`.
+Pushing a tag such as `v0.1.0` runs the [Windows build workflow](.github/workflows/build-windows.yml), which tests the code, builds `FolioDeepthinking.exe` with PyInstaller on Windows and attaches it to a GitHub Release. To build locally on Windows: `pip install -r packaging/requirements-windows.txt`, `pip install --no-deps .`, then `pyinstaller packaging/folio.spec --noconfirm`; the app is written to `dist/FolioDeepthinking.exe`.
 
 ## 🛠️ Stack
 
@@ -81,9 +87,9 @@ folio/                      — application source
   static/                   — UI icons
 tests/                      — automated test suite
 packaging/                  — PyInstaller spec, launcher, icon, Windows requirements
-windows/                    — ready-to-run Windows build (zip)
+windows/                    — ready-to-run FolioDeepthinking.exe
 docs/                       — user guide, architecture, verification notes, screenshots
-screenshots/                — README screenshot
+screenshots/                — app screenshots
 ```
 
 ---

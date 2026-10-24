@@ -551,8 +551,11 @@ class Desktop(QMainWindow):
             layout.addWidget(label("Ask about a passage, find a definition, or explore a different way to organize your book." if self.book_id else "I can help you find books in your library. Open one to explore its ideas and sources together.", "muted", True))
             self.chat_layout.addWidget(card)
             if self.book_id:
-                for text in ("Explain the argument and supporting evidence in detail", "Analyze the methods, assumptions, and limitations", "Define the key concepts and how they connect") :
-                    self.chat_layout.addWidget(button(text, "spark", quiet=True, callback=lambda checked=False, t=text: self.chat_input.setPlainText(t)))
+                # Short button labels: Qt buttons do not wrap and would widen the panel.
+                for short, text in (("Explain the argument", "Explain the argument and supporting evidence in detail"),
+                                    ("Methods and limitations", "Analyze the methods, assumptions, and limitations"),
+                                    ("Key concepts", "Define the key concepts and how they connect")):
+                    self.chat_layout.addWidget(button(short, "spark", quiet=True, callback=lambda checked=False, t=text: self.chat_input.setPlainText(t)))
         for m in history:
             if m["role"] == "user": self.chat_message("You", m["content"], user=True)
             else:
